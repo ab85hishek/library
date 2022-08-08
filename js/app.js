@@ -1,15 +1,18 @@
-console.log("Welcome to My Library");
+console.log("using prototypes");
 
+// Book constructor
 function Book(bookName, authorName, bookType) {
     this.name = bookName;
     this.author = authorName;
     this.type = bookType;
 }
 
+// Display Constructor
 function Display() {
 
 }
 
+// Add methods to display prototype
 Display.prototype.add = function (book) {
     console.log("Adding to the UI");
     let tableBody = document.getElementById('tableBody');
@@ -51,7 +54,9 @@ setTimeout(function(){
 
 }
 
+// Grab the form element
 let libraryForm = document.getElementById("libraryForm");
+// added event listner on form element
 libraryForm.addEventListener("submit", libraryFormSubmit);
 
 function libraryFormSubmit(e) {
