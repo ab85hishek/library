@@ -6,30 +6,50 @@ function Book(bookName, authorName, bookType) {
     this.type = bookType;
 }
 
-function Display(){
+function Display() {
 
 }
 
-Display.prototype.add = function(book){
+Display.prototype.add = function (book) {
     console.log("Adding to the UI");
     let tableBody = document.getElementById('tableBody');
     let uiString = `
     <tr>
-      <td>${Book.name}</td>
-      <td>${Book.author}</td>
-      <td>@${Book.type}</td>
+      <td>${book.name}</td>
+      <td>${book.author}</td>
+      <td>${book.type}</td>
     </tr>
     `
     tableBody.innerHTML += uiString;
-    
+
 }
 
-Display.prototype.clear = function(){
-    let libraryForm= document.getElementById("libraryForm");
+Display.prototype.clear = function () {
+    let libraryForm = document.getElementById("libraryForm");
     libraryForm.reset();
 }
 
+Display.prototype.validate = function (book) {
+    if (book.name.length < 3 || book.author.length < 4) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
+Display.prototype.show = function (type,displayMessage){
+let message = document.getElementById("message");
+message.innerHTML = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <strong>Message!</strong> ${displayMessage}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+`
+setTimeout(function(){
+    message.innerHTML = "";
+},5000)
+
+}
 
 let libraryForm = document.getElementById("libraryForm");
 libraryForm.addEventListener("submit", libraryFormSubmit);
@@ -58,8 +78,15 @@ function libraryFormSubmit(e) {
     console.log(book);
 
     let display = new Display();
-    display.add(book);
-    display.clear();
+    if (display.validate(book)) {
+        display.add(book);
+        display.clear();
+        display.show('success','Your book has been successfully added.')
+    }
+    else {
+        display.show('danger','Sorry, You cannot add this book.')
+        
+    }
 
 
     e.preventDefault();
